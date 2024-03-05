@@ -138,8 +138,6 @@ public class ServerConnection: Connection, HTTPServerDelegate, FramerEventClient
         case .cancelled:
             print("server connection cancelled!")
             //broadcast(event: .cancelled)
-        case .peerClosed:
-            delegate?.didReceive(event: .disconnected(self, "Connection closed by peer", UInt16(FrameOpCode.connectionClose.rawValue)))
         }
     }
     

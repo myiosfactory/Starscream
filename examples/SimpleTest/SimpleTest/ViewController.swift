@@ -30,6 +30,19 @@ class ViewController: UIViewController, WebSocketDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+//        let err = server.start(address: "localhost", port: 8080)
+//        if err != nil {
+//            print("server didn't start!")
+//        }
+//        server.onEvent = { event in
+//            switch event {
+//            case .text(let conn, let string):
+//                let payload = string.data(using: .utf8)!
+//                conn.write(data: payload, opcode: .textFrame)
+//            default:
+//                break
+//            }
+//        }
         //https://echo.websocket.org
         var request = URLRequest(url: URL(string: "http://localhost:8080")!) //https://localhost:8080
         request.timeoutInterval = 5
@@ -39,7 +52,7 @@ class ViewController: UIViewController, WebSocketDelegate {
     }
     
     // MARK: - WebSocketDelegate
-    func didReceive(event: Starscream.WebSocketEvent, client: Starscream.WebSocketClient) {
+    func didReceive(event: WebSocketEvent, client: WebSocket) {
         switch event {
         case .connected(let headers):
             isConnected = true
@@ -64,8 +77,6 @@ class ViewController: UIViewController, WebSocketDelegate {
         case .error(let error):
             isConnected = false
             handleError(error)
-        case .peerClosed:
-            break
         }
     }
     

@@ -1,5 +1,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//
 //  Transport.swift
 //  Starscream
 //
@@ -23,38 +25,28 @@
 import Foundation
 
 public enum ConnectionState {
-    /// Ready connections can send and receive data
     case connected
-    
-    /// Waiting connections have not yet been started, or do not have a viable network
     case waiting
-    
-    /// Cancelled connections have been invalidated by the client and will send no more events
     case cancelled
-    
-    /// Failed connections are disconnected and can no longer send or receive data
     case failed(Error?)
     
-    /// Viability (connection status) of the connection has updated
-    /// e.g. connection is down, connection came back up, etc.
+    //the viability (connection status) of the connection has updated
+    //e.g. connection is down, connection came back up, etc
     case viability(Bool)
     
-    /// Connection ca be upgraded to wifi from cellular.
-    /// You should consider reconnecting to take advantage of this.
+    //the connection has upgrade to wifi from cellular.
+    //you should consider reconnecting to take advantage of this
     case shouldReconnect(Bool)
     
-    /// Received data
+    //the connection receive data
     case receive(Data)
-    
-    /// Remote peer has closed the network connection.
-    case peerClosed
 }
 
-public protocol TransportEventClient: AnyObject {
+public protocol TransportEventClient: class {
     func connectionChanged(state: ConnectionState)
 }
 
-public protocol Transport: AnyObject {
+public protocol Transport: class {
     func register(delegate: TransportEventClient)
     func connect(url: URL, timeout: Double, certificatePinning: CertificatePinning?)
     func disconnect()
